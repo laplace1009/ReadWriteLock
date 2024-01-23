@@ -10,9 +10,9 @@ class ReadWriteLock
 	{
 		MAX_SPIN_COUNT = 4000,
 		MAX_TICK_COUNT = 10000,
-		EMPTY_FLAG = 0X0000'0000,
+		EMPTY_FLAG = 0x0000'0000,
 		WRITE_LOCK_MASK = 0xFFFF'0000,
-		READ_LOCK_MASK= 0X0000'FFFF,
+		READ_LOCK_MASK= 0x0000'FFFF,
 	};
 
 public:
@@ -22,7 +22,7 @@ public:
 	auto ReadUnlock() -> void;
 
 private:
-	Atomic<uint32> mLockFlag;
-	size_t mWriteLockCount;
+	Atomic<uint32> mLockFlag = EMPTY_FLAG;
+	uint32 mWriteLockCount = 0;
 };
 

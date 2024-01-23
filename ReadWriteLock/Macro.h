@@ -8,8 +8,8 @@
 #define CRASH(cause)						\
 {											\
 	uint32* crash = nullptr;				\
-	__analysis_assume(crash == nullptr);	\
-	*crash = 0XDEADBEEF;					\
+	__analysis_assume(crash != nullptr);	\
+	*crash = 0xDEADBEEF;					\
 }											
 
 // 의도적으로 크래쉬를 내기 위한 매크로2

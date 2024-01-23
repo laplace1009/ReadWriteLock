@@ -130,12 +130,14 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ReadLockGuard.cpp" />
     <ClCompile Include="ReadWriteLock.cpp" />
+    <ClCompile Include="TLS.cpp" />
     <ClCompile Include="WriteLockGuard.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Macro.h" />
     <ClInclude Include="ReadLockGuard.h" />
     <ClInclude Include="ReadWriteLock.h" />
+    <ClInclude Include="TLS.h" />
     <ClInclude Include="Types.h" />
     <ClInclude Include="WriteLockGuard.h" />
   </ItemGroup>

@@ -1,21 +1,39 @@
 #pragma once
 #include "ReadWriteLock.h"
 
-class WriteLockGuard
+class WriteLockGuardPtr
 {
 public:
-	WriteLockGuard(ReadWriteLock* lock)
+	WriteLockGuardPtr(ReadWriteLock* lock)
 		: mLock(lock)
 	{
 		mLock->WriteLock();
 	}
 
-	~WriteLockGuard()
+	~WriteLockGuardPtr()
 	{
 		mLock->WriteUnlock();
 	}
 
 private:
 	ReadWriteLock* mLock;
+};
+
+class WriteLockGuardRef
+{
+public:
+	WriteLockGuardRef(ReadWriteLock& lock)
+		: mLock(lock)
+	{
+		mLock.WriteLock();
+	}
+
+	~WriteLockGuardRef()
+	{
+		mLock.ReadUnlock();
+	}
+
+private:
+	ReadWriteLock& mLock;
 };
 

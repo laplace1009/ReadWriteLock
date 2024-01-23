@@ -18,6 +18,9 @@
     <Filter Include="Macro">
       <UniqueIdentifier>{9741e878-6a3f-4169-869a-2254856bdf72}</UniqueIdentifier>
     </Filter>
+    <Filter Include="TLS">
+      <UniqueIdentifier>{32bf608f-dd87-4e77-90fe-91bd22af31d8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -31,6 +34,9 @@
     </ClCompile>
     <ClCompile Include="WriteLockGuard.cpp">
       <Filter>Lock</Filter>
+    </ClCompile>
+    <ClCompile Include="TLS.cpp">
+      <Filter>TLS</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -48,6 +54,9 @@
     </ClInclude>
     <ClInclude Include="WriteLockGuard.h">
       <Filter>Lock</Filter>
+    </ClInclude>
+    <ClInclude Include="TLS.h">
+      <Filter>TLS</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
