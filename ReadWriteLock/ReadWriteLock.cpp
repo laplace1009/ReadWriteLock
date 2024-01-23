@@ -7,21 +7,27 @@
 // 임시 thread_local id
 std::atomic<uint32_t> LThreadId = 1;
 
-void ReadWriteLock::WriteLock()
+auto ReadWriteLock::WriteLock() -> void
 {
-	const uint32 lockOwnerId = mLockFlag.load() & WRITE_LOCK_MASK >> 16;
+	const uint32 lockOwnerId = (mLockFlag.load() & WRITE_LOCK_MASK) >> 16;
 	if (lockOwnerId == LThreadId) {
 		mWriteLockCount++;
 		return;
 	}
 
+	// desired 부분 수정
+	const int32 desired = (LThreadId << 16) & WRITE_LOCK_MASK;
+
+	// tick 측정 시작 부분 루프 밖으로 이동
+	std::chrono::system_clock::time_point start = std::chrono::system_clock::now();
 	while (true)
 	{
-		std::chrono::system_clock::time_point start = std::chrono::system_clock::now();
+		
 		for (size_t spinCount = 0; spinCount < MAX_SPIN_COUNT; ++spinCount)
 		{
 			uint32 expected = 0;
-			if (mLockFlag.compare_exchange_strong(OUT expected, 1))
+			// desired 부분 수정
+			if (mLockFlag.compare_exchange_strong(OUT expected, desired))
 			{
 				mLockFlag++;
 				return;
@@ -36,22 +42,25 @@ void ReadWriteLock::WriteLock()
 	}
 }
 
-void ReadWriteLock::WriteUnlock()
+auto ReadWriteLock::WriteUnlock() -> void
 {
-	
+	ASSERT_CRASH((mLockFlag & WRITE_LOCK_MASK) >> 16 == LThreadId);
+
+	const int32 writeCount = --mWriteLockCount;
+	if (writeCount == 0) mLockFlag.store(0);
 }
 
-void ReadWriteLock::ReadLock()
+auto ReadWriteLock::ReadLock() -> void
 {
 	if ((mLockFlag & WRITE_LOCK_MASK) >> 16 == LThreadId) {
 		mLockFlag++;
 		return;
 	}
 
+	// tick 측정 시작 부분 루프 밖으로 이동
+	std::chrono::system_clock::time_point start = std::chrono::system_clock::now();
 	while (true)
-	{
-		std::chrono::system_clock::time_point start = std::chrono::system_clock::now();
-		
+	{	
 		for (size_t spinCount = 0; spinCount < MAX_SPIN_COUNT; ++spinCount)
 		{
 			uint32 expected = mLockFlag.load() & READ_LOCK_MASK;
@@ -59,6 +68,7 @@ void ReadWriteLock::ReadLock()
 		}
 
 		std::chrono::system_clock::time_point end = std::chrono::system_clock::now();
+
 		std::chrono::duration<double, std::milli> elapsed = end - start;
 		if (static_cast<uint32>(elapsed.count()) > MAX_TICK_COUNT) CRASH("Lock Time out");
 
@@ -66,7 +76,8 @@ void ReadWriteLock::ReadLock()
 	}
 }
 
-void ReadWriteLock::ReadUnlock()
+auto ReadWriteLock::ReadUnlock() -> void
 {
-	return;
+	const int32 lockFlag = mLockFlag.fetch_sub(1) & READ_LOCK_MASK;
+	if (lockFlag == 0) CRASH('Invalid Unlock');
 }

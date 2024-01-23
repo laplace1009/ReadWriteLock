@@ -4,16 +4,21 @@
 
 class ReadWriteLock
 {
-	constexpr static uint32 MAX_TICK_COUNT = 10000.0;
-	constexpr static uint32 MAX_SPIN_COUNT = 4000;
-	constexpr static uint32 WRITE_LOCK_MASK = 0XFFFF'0000;
-	constexpr static uint32 READ_LOCK_MASK = 0X0000'FFFF;
+	// 필요한 상수들
+	enum : uint32
+	{
+		MAX_SPIN_COUNT = 4000,
+		MAX_TICK_COUNT = 10000,
+		EMPTY_FLAG = 0X0000'0000,
+		WRITE_LOCK_MASK = 0xFFFF'0000,
+		READ_LOCK_MASK= 0X0000'FFFF,
+	};
 
 public:
-	void WriteLock();
-	void WriteUnlock();
-	void ReadLock();
-	void ReadUnlock();
+	auto WriteLock() -> void;
+	auto WriteUnlock() -> void;
+	auto ReadLock() -> void;
+	auto ReadUnlock() -> void;
 
 private:
 	Atomic<uint32> mLockFlag;
