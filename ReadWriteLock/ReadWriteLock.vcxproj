@@ -127,7 +127,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp" />
     <ClCompile Include="ReadLockGuard.cpp" />
     <ClCompile Include="ReadWriteLock.cpp" />
     <ClCompile Include="TLS.cpp" />
