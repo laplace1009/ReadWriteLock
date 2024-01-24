@@ -21,11 +21,11 @@
     <Filter Include="TLS">
       <UniqueIdentifier>{32bf608f-dd87-4e77-90fe-91bd22af31d8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="헤더 파일">
+      <UniqueIdentifier>{b9063edc-0790-4a96-8643-b1d031e44930}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="ReadWriteLock.cpp">
       <Filter>Lock</Filter>
     </ClCompile>
@@ -57,6 +57,9 @@
     </ClInclude>
     <ClInclude Include="TLS.h">
       <Filter>TLS</Filter>
+    </ClInclude>
+    <ClInclude Include="Lock.h">
+      <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

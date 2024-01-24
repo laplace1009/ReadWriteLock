@@ -133,6 +133,7 @@
     <ClCompile Include="WriteLockGuard.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Lock.h" />
     <ClInclude Include="Macro.h" />
     <ClInclude Include="ReadLockGuard.h" />
     <ClInclude Include="ReadWriteLock.h" />
