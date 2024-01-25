@@ -1,39 +1,38 @@
 #pragma once
 #include "ReadWriteLock.h"
 
-class WriteLockGuardPtr
+template<typename LT>
+class WriteLockGuard
 {
 public:
-	WriteLockGuardPtr(ReadWriteLock* lock)
+	explicit WriteLockGuard(LT lock)
 		: mLock(lock)
 	{
-		mLock->WriteLock();
+		acquireLock();
 	}
 
-	~WriteLockGuardPtr()
+	~WriteLockGuard()
 	{
-		mLock->WriteUnlock();
+		releaseLock();
 	}
 
 private:
-	ReadWriteLock* mLock;
-};
-
-class WriteLockGuardRef
-{
-public:
-	WriteLockGuardRef(ReadWriteLock& lock)
-		: mLock(lock)
+	auto acquireLock() -> void
 	{
-		mLock.WriteLock();
+		if constexpr (std::is_pointer_v<LT>)
+			mLock->WriteLock();
+		else
+			mLock.WriteLock();
 	}
 
-	~WriteLockGuardRef()
+	auto releaseLock() -> void
 	{
-		mLock.ReadUnlock();
+		if constexpr (std::is_pointer_v<LT>)
+			mLock->WriteUnlock();
+		else
+			mLock.WriteUnlock();
 	}
 
 private:
-	ReadWriteLock& mLock;
+	LT mLock;
 };
-
