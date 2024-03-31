@@ -1,5 +1,8 @@
 # ReadWriteLock
 
-### spinLock기반의 ReadWriteLock 구현 연습
+### SpinLock ReadWriteLock
+#### C++20 MSVC
 
-C++20 으로 개발
+##### 
+* Atomic을 이용해서 SpinLock기반의 ReadWriteLock
+* RAII를 이용한 LockGuard
